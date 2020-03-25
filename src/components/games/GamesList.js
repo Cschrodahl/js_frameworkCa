@@ -43,7 +43,6 @@ function GamesList() {
     // set filtered games to the new array
     setFilteredGames(filteredArray);
   };
-
   if (loading) {
     return <Spinner animation="border" className="spinner" />;
   }
