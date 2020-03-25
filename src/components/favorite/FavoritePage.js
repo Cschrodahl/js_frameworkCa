@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import FavoriteItem from "./FavoriteItem";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
@@ -11,6 +11,10 @@ export function FavoritePage() {
   for (let key in favorites) {
     games.push(JSON.parse(favorites[key]));
   }
+  // Similar to componentDidMount and componentDidUpdate:
+  useEffect(() => {
+    setGames(games);
+  }, []);
   const filterCards = function(e) {
     // Let's get the value the user typed in and make it lower case:
     const searchValue = e.target.value.toLowerCase();

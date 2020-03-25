@@ -6,52 +6,28 @@ import Button from "react-bootstrap/Button";
 import ListGroup from "react-bootstrap/ListGroup";
 import ListGroupItem from "react-bootstrap/ListGroupItem";
 import FavoriteGames from "./FavoriteGames";
-var request = indexedDB.open("MyTestDatabase", 1),
-  db,
-  store,
-  tx;
 
-request.onupgradeneeded = function() {
-  let db = request.result;
-  store = db.createObjectStore("FavoriteGames", { keyPath: "ID" });
-  //index = store.createIndex("GameName", "GameName", { unique: false });
-};
-function SaveFavorites(result, task) {
-  request = indexedDB.open("MyTestDatabase", 1);
-  console.log(result);
-  request.onerror = function(event) {
-    // Do something with request.errorCode!
-    console.log("There was an error", event.target.errorCode);
-  };
-  request.onsuccess = function(event) {
-    // Do something with request.result!
-    db = request.result;
-    tx = db.transaction("FavoriteGames", "readwrite");
-    store = tx.objectStore("FavoriteGames");
-    //index = store.index("GameName");
-
-    db.onerror = function(event) {
-      console.log("ERROR", event.target.errorCode);
-    };
-    result.forEach(function(obj) {
-      store[task](obj);
-    });
-    //  let game = store.get(0);
-
-    // game.onsuccess = function() {
-    // console.log(game.result);
-    //};
-    tx.oncomplete = function() {
-      db.close();
-    };
-  };
+//create hover effect based on if it already is a favorite or not
+function iconEffect(event, state, image) {
+  let value = [
+    {
+      mouseEvent: { mouseover: "mouseover", mouseout: "mouseout" }[event],
+      state: state,
+      image: {
+        mouseover: !state ? "/icon/starIcon-03.png" : "/icon/starIcon-04.png",
+        mouseout: !state ? "/icon/starIcon-01.png" : "/icon/starIcon-02.png"
+      }[image]
+    }
+  ];
+  return value;
 }
-let favoriteArray = [];
+
 function GameItem({ id, name, image, releasedDate, rating }) {
   let isFavorite = false;
   let ischecked = "";
-  const favoriteImg = "/logo192.png";
-  const favoriteImgN = "/logo512.png";
+  const favoriteImg = "/icon/starIcon-02.png";
+  const favoriteImgN = "/icon/starIcon-01.png";
+
   if (localStorage.getItem(name)) {
     isFavorite = true;
     ischecked = favoriteImg;
@@ -59,11 +35,18 @@ function GameItem({ id, name, image, releasedDate, rating }) {
     ischecked = favoriteImgN;
   }
 
-  let i = -1;
   const findFav = function(e) {
     if (!isFavorite && localStorage.getItem) {
-      localStorage.setItem(name, JSON.stringify({ Name: name }));
-      // favoriteArray.push({ ID: id, GameName: name });
+      localStorage.setItem(
+        name,
+        JSON.stringify({
+          Name: name,
+          Id: id,
+          Image: image,
+          ReleasedDate: releasedDate,
+          Rating: rating
+        })
+      );
       isFavorite = true;
       e.target.src = favoriteImg;
     } else {
@@ -71,13 +54,27 @@ function GameItem({ id, name, image, releasedDate, rating }) {
       isFavorite = false;
       e.target.src = favoriteImgN;
     }
-    SaveFavorites(favoriteArray, "put");
   };
-
+  //I use the iconEffect function to change the favorite star based on state
+  const iconState = event => {
+    const e = iconEffect(
+      event.nativeEvent.type,
+      isFavorite,
+      event.nativeEvent.type
+    );
+    for (let key in e) {
+      event.target.src = e[key].image;
+    }
+  };
   return (
     <Card>
       <Card.Img variant="top" src={image} />
       <Card.Body>
+        <FavoriteGames
+          favorite={findFav}
+          star={ischecked}
+          iconState={iconState}
+        ></FavoriteGames>
         <Card.Title>{name}</Card.Title>
       </Card.Body>
       <ListGroup className="list-group-flush">
@@ -96,9 +93,6 @@ function GameItem({ id, name, image, releasedDate, rating }) {
             View
           </Button>
         </Link>
-        <FavoriteGames favorite={findFav} star={ischecked}>
-          Favorite
-        </FavoriteGames>
       </Card.Body>
     </Card>
   );
