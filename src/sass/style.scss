@@ -4,3 +4,24 @@
 .search {
   margin-bottom: 10px;
 }
+
+.Favorite {
+  width: 55px;
+  height: 55px;
+  .active {
+    background-image: url("../icon/starIcon-02.png");
+    width: 50px;
+    height: 50px;
+    &:hover {
+      background-image: url("../icon/starIcon-04.png");
+    }
+  }
+  :not(.active) {
+    width: 50px;
+    height: 50px;
+    background-image: url("../icon/starIcon-01.png");
+    &:hover {
+      background-image: url("../icon/starIcon-03.png");
+    }
+  }
+}

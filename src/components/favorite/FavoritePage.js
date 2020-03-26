@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import FavoriteItem from "./FavoriteItem";
+import GameItem from "../games/GameItem";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import SearchGame from "../games/SearchGame";
@@ -45,7 +45,7 @@ export function FavoritePage() {
 
           return (
             <Col sm={6} md={3} key={Id}>
-              <FavoriteItem
+              <GameItem
                 id={Id}
                 name={Name}
                 image={Image}

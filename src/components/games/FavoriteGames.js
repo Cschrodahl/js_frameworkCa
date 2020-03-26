@@ -1,20 +1,15 @@
 import React from "react";
 //This is used for the favorite button
-function FavoriteGames({ star, iconState }) {
+function FavoriteGames({ iconState, favorite }) {
   return (
-    <img
-      alt="Favorite"
-      src={star}
-      onClick={event => {
-        iconState(event);
-      }}
-      onMouseOver={event => {
-        iconState(event);
-      }}
-      onMouseOut={event => {
-        iconState(event);
-      }}
-    />
+    <div className="Favorite">
+      <div
+        className={favorite}
+        onClick={event => {
+          iconState(event);
+        }}
+      ></div>
+    </div>
   );
 }
 
