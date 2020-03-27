@@ -10,7 +10,6 @@ function GameDetail() {
   const [detail, setDetail] = useState(null);
   const [loading, setLoading] = useState(true);
   const [genres, setGenres] = useState(null);
-  const [platforms, setPlatforms] = useState(null);
   let { id } = useParams();
 
   const url = Games_URL + "/" + id;
@@ -21,16 +20,14 @@ function GameDetail() {
       .then(json => {
         setDetail(json);
         setGenres(json.genres);
-        setPlatforms(json.parent_platforms);
       })
       .catch(error => console.log(error))
       .finally(() => setLoading(false));
-  }, []);
+  }, [url]);
 
   if (loading) {
     return <Spinner animation="border" className="spinner" />;
   }
-  console.log(test);
   return (
     <Row>
       <Col md={6} className="detail-image">

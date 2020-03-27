@@ -6,7 +6,7 @@ import SearchGame from "../games/SearchGame";
 
 export function FavoritePage() {
   const favorites = { ...localStorage };
-
+  const empty = "empty";
   const [game, setGames] = useState([]);
   let games = [];
   for (let key in favorites) {
