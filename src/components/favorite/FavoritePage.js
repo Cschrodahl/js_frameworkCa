@@ -5,30 +5,25 @@ import Row from "react-bootstrap/Row";
 import SearchGame from "../games/SearchGame";
 
 export function FavoritePage() {
-  const favorites = { ...localStorage };
   const [game, setGames] = useState([]);
-  const games = [];
-  for (let key in favorites) {
-    games.push(JSON.parse(favorites[key]));
-  }
-  // Similar to componentDidMount and componentDidUpdate:
+  const [games, getGames] = useState([]);
   useEffect(() => {
+    getGames(function(value) {
+      const favorites = { ...localStorage };
+      for (let key in favorites) {
+        value.push(JSON.parse(favorites[key]));
+      }
+      return value;
+    });
     setGames(games);
-  }, []);
+  }, [games]);
 
+  //Filtering the card based on search field
   const filterCards = function(e) {
-    // Let's get the value the user typed in and make it lower case:
     const searchValue = e.target.value.toLowerCase();
-
-    // create a new array from the games array
     const filteredArray = games.filter(function(char) {
-      // make each name lowercase so we can check it properly with the search value
       const lowerCaseName = char.Name.toLowerCase();
-
-      // check if the game name begins with the search value using the startsWith method
       if (lowerCaseName.startsWith(searchValue)) {
-        // if it does, return true
-        // this will add it to the new filtered array
         return true;
       }
       return false;

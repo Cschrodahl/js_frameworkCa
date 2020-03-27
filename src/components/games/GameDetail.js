@@ -10,6 +10,8 @@ function GameDetail() {
   const [detail, setDetail] = useState(null);
   const [loading, setLoading] = useState(true);
   const [genres, setGenres] = useState(null);
+  const [platform, setPlatforms] = useState([]);
+  const [platforms, getPlatforms] = useState([]);
   let { id } = useParams();
 
   const url = Games_URL + "/" + id;
@@ -20,15 +22,44 @@ function GameDetail() {
       .then(json => {
         setDetail(json);
         setGenres(json.genres);
+        getPlatforms(function(value) {
+          let item = json.parent_platforms;
+          for (let key in item) {
+            for (let index in item[key]) {
+              value.push(item[key][index]);
+            }
+          }
+          return value;
+        });
+        setPlatforms(platforms);
       })
       .catch(error => console.log(error))
       .finally(() => setLoading(false));
-  }, [url]);
-
+  }, [url, platforms]);
   if (loading) {
     return <Spinner animation="border" className="spinner" />;
   }
   return (
+    <Row>
+      <Col md={6} className="detail-image">
+        <Image src={detail.background_image} fluid />
+        <GameStats genres={genres} platform={platform}></GameStats>
+      </Col>
+      <Col>
+        <h1>{detail.name}</h1>
+        <div>
+          <b>Description: </b>{" "}
+          <div dangerouslySetInnerHTML={{ __html: detail.description }}></div>
+        </div>
+        <p>
+          <b>Website: </b>
+          <a href={detail.website}>{detail.website}</a>
+        </p>
+      </Col>
+    </Row>
+  );
+}
+/*return (
     <Row>
       <Col md={6} className="detail-image">
         <Image src={detail.background_image} fluid />
@@ -49,6 +80,5 @@ function GameDetail() {
         </p>
       </Col>
     </Row>
-  );
-}
+  ); */
 export default GameDetail;

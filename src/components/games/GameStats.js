@@ -1,10 +1,21 @@
 import React from "react";
 import ListGroup from "react-bootstrap/ListGroup";
-function GameStats({ info }) {
+function GameStats({ genres, platform }) {
   return (
     <>
       <ListGroup>
-        <ListGroup.Item>{info}</ListGroup.Item>
+        <h2>Genres</h2>
+        {genres.map(item => {
+          const { name, id } = item;
+          return <ListGroup.Item key={id}>{name}</ListGroup.Item>;
+        })}
+      </ListGroup>
+      <ListGroup>
+        <h2>PlatForm</h2>
+        {platform.map(item => {
+          const { name, id } = item;
+          return <ListGroup.Item key={id}>{name}</ListGroup.Item>;
+        })}
       </ListGroup>
     </>
   );
