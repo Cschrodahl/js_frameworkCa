@@ -32,17 +32,17 @@ function GameDetail() {
     <Row>
       <Col md={6} className="detail-image">
         <Image src={detail.background_image} fluid />
-        {genres.map(info => {
+        {genres.map((info, index) => {
           const { name } = info;
-          return <GameStats info={name}></GameStats>;
+          return <GameStats info={name} key={index}></GameStats>;
         })}
       </Col>
       <Col>
         <h1>{detail.name}</h1>
-        <p>
+        <div>
           <b>Description: </b>{" "}
           <div dangerouslySetInnerHTML={{ __html: detail.description }}></div>
-        </p>
+        </div>
         <p>
           <b>Website: </b>
           <a href={detail.website}>{detail.website}</a>
@@ -51,8 +51,4 @@ function GameDetail() {
     </Row>
   );
 }
-/*{detail.genres.map(info => {
-        const { genres } = info;
-        return <GameStats genres={genres.name}></GameStats>;
-      })} */
 export default GameDetail;
