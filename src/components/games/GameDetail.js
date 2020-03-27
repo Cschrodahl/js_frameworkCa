@@ -5,11 +5,12 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Image from "react-bootstrap/Image";
 import { Games_URL } from "../../constants/api";
-
+import GameStats from "./GameStats";
 function GameDetail() {
   const [detail, setDetail] = useState(null);
   const [loading, setLoading] = useState(true);
-
+  const [genres, setGenres] = useState(null);
+  const [platforms, setPlatforms] = useState(null);
   let { id } = useParams();
 
   const url = Games_URL + "/" + id;
@@ -19,6 +20,8 @@ function GameDetail() {
       .then(response => response.json())
       .then(json => {
         setDetail(json);
+        setGenres(json.genres);
+        setPlatforms(json.parent_platforms);
       })
       .catch(error => console.log(error))
       .finally(() => setLoading(false));
@@ -27,12 +30,15 @@ function GameDetail() {
   if (loading) {
     return <Spinner animation="border" className="spinner" />;
   }
-  console.log(detail);
-
+  console.log(test);
   return (
     <Row>
       <Col md={6} className="detail-image">
         <Image src={detail.background_image} fluid />
+        {genres.map(info => {
+          const { name } = info;
+          return <GameStats info={name}></GameStats>;
+        })}
       </Col>
       <Col>
         <h1>{detail.name}</h1>
@@ -48,5 +54,8 @@ function GameDetail() {
     </Row>
   );
 }
-
+/*{detail.genres.map(info => {
+        const { genres } = info;
+        return <GameStats genres={genres.name}></GameStats>;
+      })} */
 export default GameDetail;

@@ -6,11 +6,13 @@ import SearchGame from "../games/SearchGame";
 
 export function FavoritePage() {
   const favorites = { ...localStorage };
+
   const [game, setGames] = useState([]);
   let games = [];
   for (let key in favorites) {
     games.push(JSON.parse(favorites[key]));
   }
+  console.log(games);
   // Similar to componentDidMount and componentDidUpdate:
   useEffect(() => {
     setGames(games);
@@ -36,28 +38,39 @@ export function FavoritePage() {
     // set filtered games to the new array
     setGames(filteredArray);
   };
-  return (
-    <>
-      <SearchGame handleSearch={filterCards} />
-      <Row>
-        {game.map(game => {
-          const { Id, Name, Image, ReleasedDate, Rating } = game;
+  if (isNaN(game)) {
+    return (
+      <>
+        <SearchGame handleSearch={filterCards} />
+        <Row>
+          {game.map(game => {
+            const { Id, Name, Image, ReleasedDate, Rating } = game;
 
-          return (
-            <Col sm={6} md={3} key={Id}>
-              <GameItem
-                id={Id}
-                name={Name}
-                image={Image}
-                releasedDate={ReleasedDate}
-                rating={Rating}
-              />
-            </Col>
-          );
-        })}
+            return (
+              <Col sm={6} md={3} key={Id}>
+                <GameItem
+                  id={Id}
+                  name={Name}
+                  image={Image}
+                  releasedDate={ReleasedDate}
+                  rating={Rating}
+                />
+              </Col>
+            );
+          })}
+        </Row>
+      </>
+    );
+  } else {
+    return (
+      <Row>
+        <Col>
+          You dont have any favorites yet! <br /> Go back to the{" "}
+          <a href="/">Home page</a>, and Choose your favorite games.
+        </Col>
       </Row>
-    </>
-  );
+    );
+  }
 }
 
 export default FavoritePage;
