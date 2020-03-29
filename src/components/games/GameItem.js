@@ -9,7 +9,7 @@ import FavoriteGames from "./FavoriteGames";
 
 function GameItem({ id, name, image, releasedDate, rating }) {
   let favorite = localStorage.getItem(name);
-
+  //Adding or removing items in the localSorage
   const iconState = event => {
     if (event.target.classList.contains("active")) {
       localStorage.setItem(

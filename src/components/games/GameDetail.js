@@ -22,6 +22,7 @@ function GameDetail() {
       .then(json => {
         setDetail(json);
         setGenres(json.genres);
+        //Getting the platforms they are located json.parent_platforms[index].platform.
         getPlatforms(function(value) {
           let item = json.parent_platforms;
           for (let key in item) {
@@ -40,7 +41,7 @@ function GameDetail() {
     return <Spinner animation="border" className="spinner" />;
   }
   return (
-    <Row>
+    <Row className="content">
       <Col md={6} className="detail-image">
         <Image src={detail.background_image} fluid />
         <GameStats genres={genres} platform={platform}></GameStats>
@@ -59,26 +60,5 @@ function GameDetail() {
     </Row>
   );
 }
-/*return (
-    <Row>
-      <Col md={6} className="detail-image">
-        <Image src={detail.background_image} fluid />
-        {genres.map((info, index) => {
-          const { name } = info;
-          return <GameStats info={name} key={index}></GameStats>;
-        })}
-      </Col>
-      <Col>
-        <h1>{detail.name}</h1>
-        <div>
-          <b>Description: </b>{" "}
-          <div dangerouslySetInnerHTML={{ __html: detail.description }}></div>
-        </div>
-        <p>
-          <b>Website: </b>
-          <a href={detail.website}>{detail.website}</a>
-        </p>
-      </Col>
-    </Row>
-  ); */
+
 export default GameDetail;

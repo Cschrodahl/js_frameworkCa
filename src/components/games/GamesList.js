@@ -21,26 +21,18 @@ function GamesList() {
       .catch(error => console.log(error))
       .finally(() => setLoading(false));
   }, []);
-
+  // Filtering the games based on search result
   const filterCards = function(e) {
-    // Let's get the value the user typed in and make it lower case:
     const searchValue = e.target.value.toLowerCase();
 
-    // create a new array from the games array
     const filteredArray = games.filter(function(char) {
-      // make each name lowercase so we can check it properly with the search value
       const lowerCaseName = char.name.toLowerCase();
 
-      // check if the game name begins with the search value using the startsWith method
       if (lowerCaseName.startsWith(searchValue)) {
-        // if it does, return true
-        // this will add it to the new filtered array
         return true;
       }
       return false;
     });
-
-    // set filtered games to the new array
     setFilteredGames(filteredArray);
   };
   if (loading) {

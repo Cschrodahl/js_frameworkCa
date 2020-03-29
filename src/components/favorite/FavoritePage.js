@@ -3,6 +3,7 @@ import GameItem from "../games/GameItem";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import SearchGame from "../games/SearchGame";
+import NoSelectedFavorites from "./NoSelectedFavorites";
 
 export function FavoritePage() {
   const [game, setGames] = useState([]);
@@ -32,8 +33,11 @@ export function FavoritePage() {
     // set filtered games to the new array
     setGames(filteredArray);
   };
+  if (games <= 1) {
+    return <NoSelectedFavorites />;
+  }
   return (
-    <>
+    <div className="content">
       <SearchGame handleSearch={filterCards} />
       <Row>
         {game.map(game => {
@@ -52,7 +56,7 @@ export function FavoritePage() {
           );
         })}
       </Row>
-    </>
+    </div>
   );
 }
 

@@ -4,6 +4,7 @@ import InputGroup from "react-bootstrap/InputGroup";
 import FormControl from "react-bootstrap/FormControl";
 
 export default function SearchGame({ handleSearch }) {
+  //Search bar
   return (
     <InputGroup className="search">
       <FormControl
