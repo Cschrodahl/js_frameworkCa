@@ -8,13 +8,9 @@ import ListGroupItem from "react-bootstrap/ListGroupItem";
 import FavoriteGames from "./FavoriteGames";
 
 function GameItem({ id, name, image, releasedDate, rating }) {
-  let fav = "";
-  if (localStorage.getItem(name)) {
-    fav = "active";
-  }
-  const iconState = event => {
-    event.target.classList.toggle("active");
+  let favorite = localStorage.getItem(name);
 
+  const iconState = event => {
     if (event.target.classList.contains("active")) {
       localStorage.setItem(
         name,
@@ -34,7 +30,10 @@ function GameItem({ id, name, image, releasedDate, rating }) {
     <Card>
       <Card.Img variant="top" src={image} />
       <Card.Body>
-        <FavoriteGames favorite={fav} iconState={iconState}></FavoriteGames>
+        <FavoriteGames
+          favorite={favorite}
+          iconState={iconState}
+        ></FavoriteGames>
         <Card.Title>{name}</Card.Title>
       </Card.Body>
       <ListGroup className="list-group-flush">

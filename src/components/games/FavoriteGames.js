@@ -4,8 +4,9 @@ function FavoriteGames({ iconState, favorite }) {
   return (
     <div className="Favorite">
       <div
-        className={favorite}
+        className={favorite ? "active" : ""}
         onClick={event => {
+          event.target.classList.toggle("active");
           iconState(event);
         }}
       ></div>
