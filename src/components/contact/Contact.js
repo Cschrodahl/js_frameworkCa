@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-
+import FormError from "./FormError";
+import FormSubmitted from "./FormSubmitted";
 const schema = yup.object().shape({
   firstName: yup.string().required("First name is required"),
   lastName: yup.string().required("Last name is required"),
@@ -14,20 +15,27 @@ const schema = yup.object().shape({
   message: yup
     .string()
     .required("Message is required")
-    .min(10, "Message must contain atleast 10 letters")
+    .min(10, "Message must contain atleast 10 letters"),
 });
 
 function Contact() {
+  const [validated, setValidated] = useState(false);
   const { register, handleSubmit, errors } = useForm({
-    validationSchema: schema
+    validationSchema: schema,
   });
 
-  function onSubmit(data) {
+  function onSubmit(data, event) {
     console.log("data", data);
+    event.target.reset();
+
+    setValidated(true);
+
+    setTimeout(() => setValidated(false), 3000);
   }
 
   return (
     <>
+      <FormSubmitted displayMessage={validated} />
       <Form onSubmit={handleSubmit(onSubmit)}>
         <Form.Group>
           <Form.Label>First Name</Form.Label>
@@ -36,7 +44,9 @@ function Contact() {
             placeholder="Enter your First name"
             ref={register}
           />
-          {errors.firstName && <p>{errors.firstName.message}</p>}
+          {errors.firstName && (
+            <FormError>{errors.firstName.message}</FormError>
+          )}
         </Form.Group>
         <Form.Group>
           <Form.Label>Last Name</Form.Label>
@@ -45,7 +55,7 @@ function Contact() {
             placeholder="Enter your Last name"
             ref={register}
           />
-          {errors.lastName && <p>{errors.lastName.message}</p>}
+          {errors.lastName && <FormError>{errors.lastName.message}</FormError>}
         </Form.Group>
         <Form.Group>
           <Form.Label>Email</Form.Label>
@@ -54,7 +64,7 @@ function Contact() {
             placeholder="Enter your email"
             ref={register}
           />
-          {errors.email && <p>{errors.email.message}</p>}
+          {errors.email && <FormError>{errors.email.message}</FormError>}
         </Form.Group>
 
         <Form.Group>
@@ -65,7 +75,7 @@ function Contact() {
             placeholder="Write a message"
             ref={register}
           />
-          {errors.message && <p>{errors.message.message}</p>}
+          {errors.message && <FormError>{errors.message.message}</FormError>}
         </Form.Group>
 
         <Button type="submit">Submit</Button>

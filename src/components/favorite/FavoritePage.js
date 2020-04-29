@@ -9,7 +9,7 @@ export function FavoritePage() {
   const [game, setGames] = useState([]);
   const [games, getGames] = useState([]);
   useEffect(() => {
-    getGames(function(value) {
+    getGames(function (value) {
       const favorites = { ...localStorage };
       for (let key in favorites) {
         value.push(JSON.parse(favorites[key]));
@@ -20,9 +20,9 @@ export function FavoritePage() {
   }, [games]);
 
   //Filtering the card based on search field
-  const filterCards = function(e) {
+  const filterCards = function (e) {
     const searchValue = e.target.value.toLowerCase();
-    const filteredArray = games.filter(function(char) {
+    const filteredArray = games.filter(function (char) {
       const lowerCaseName = char.Name.toLowerCase();
       if (lowerCaseName.startsWith(searchValue)) {
         return true;
@@ -40,7 +40,7 @@ export function FavoritePage() {
     <div className="content">
       <SearchGame handleSearch={filterCards} />
       <Row>
-        {game.map(game => {
+        {game.map((game) => {
           const { Id, Name, Image, ReleasedDate, Rating } = game;
 
           return (
